@@ -10,7 +10,7 @@ library(ROCR)
 #imported the dummypop.xlsx file
 dummypop
 colnames(dummypop) <-c("L-CORE", "L_SURF", "L-O2","L-BP","SURF-STBL","CORE-STBL","BP-STBL","COMFORT","ADM-DECS")
-is.na(dummypop) #NA values
+is.na(dummypop) # check for NA values
 
 #mean imputation
 replace <- round(mean(dummypop$COMFORT,na.rm = TRUE))
@@ -29,7 +29,7 @@ dummypop$`SURF-STBL` <-factor(dummypop$`SURF-STBL`,levels = c(0,1),ordered = FAL
 dummypop$`CORE-STBL` <-factor(dummypop$`CORE-STBL`,levels = c(0,1,2),ordered = FALSE)
 dummypop$`BP-STBL` <-factor(dummypop$`BP-STBL`,levels = c(0,1,2),ordered = FALSE)
 dummypop$`ADM-DECS` <-factor(dummypop$`ADM-DECS`,levels = c(0,1),ordered = FALSE)
-dummypop$COMFORT <-factor(dummypop$COMFORT,levels = c(0,1),ordered = FALSE)
+dummypop$COMFORT <-factor(dummypop$COMFORT,levels = c(0,1),ordered = FALSE)  # (0-10) taken as 0 and (10-20) as 1 (changed in excel)
 
 #logistic regression 
 set.seed(1234)
@@ -58,7 +58,6 @@ test_predictions
 test_predictions[test_predictions >=0.5] <- 1
 test_predictions[ test_predictions != 1] <- 0
 test_predictions[is.na(test_predictions)] <- 0
-View(test_predictions)
 table(test_predictions)
 table(test$`ADM-DECS`)
 
