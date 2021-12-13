@@ -1,11 +1,26 @@
+#libraries used
+library(ggplot2)
+library(dslabs)
+library(dplyr)
+library(tidyverse)
+library(GGally)
+library(plyr)
+library(ROCR)
+
+#imported the dummypop.xlsx file
 dummypop
 colnames(dummypop) <-c("L-CORE", "L_SURF", "L-O2","L-BP","SURF-STBL","CORE-STBL","BP-STBL","COMFORT","ADM-DECS")
-is.na(dummypop)
+is.na(dummypop) #NA values
+
+#mean imputation
 replace <- round(mean(dummypop$COMFORT,na.rm = TRUE))
 dummypop$COMFORT[is.na(dummypop$COMFORT)] <- mean(replace)
+
 View(dummypop$COMFORT)
 head(dummypop)
 str(dummypop)
+
+#using factor function for changing input and output variables to factor
 dummypop$`L-CORE` <-factor(dummypop$`L-CORE`,levels = c(0,1,2),ordered = FALSE)
 dummypop$L_SURF <-factor(dummypop$L_SURF,levels = c(0,1,2),ordered = FALSE)
 dummypop$`L-O2` <-factor(dummypop$`L-O2`,levels = c(0,1),ordered = FALSE)
@@ -15,7 +30,8 @@ dummypop$`CORE-STBL` <-factor(dummypop$`CORE-STBL`,levels = c(0,1,2),ordered = F
 dummypop$`BP-STBL` <-factor(dummypop$`BP-STBL`,levels = c(0,1,2),ordered = FALSE)
 dummypop$`ADM-DECS` <-factor(dummypop$`ADM-DECS`,levels = c(0,1),ordered = FALSE)
 dummypop$COMFORT <-factor(dummypop$COMFORT,levels = c(0,1),ordered = FALSE)
-table(dummypop$COMFORT)
+
+#logistic regression 
 set.seed(1234)
 indexset <- sample(2,nrow(dummypop),replace = T,prob = c(0.8,0.2))
 train <- dummypop[indexset==1,]
@@ -77,7 +93,7 @@ recall
 f1 = 2* precision*recall/(precision + recall)
 f1
 data.frame(precision,recall,f1)
-table(test_predictions,test$`ADM-DECS`)
+
 
 
 
